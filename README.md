@@ -27,6 +27,9 @@ npm run dev
 # Build for production
 npm run build
 npm start
+
+# Run quality checks (type-check, lint, build)
+npm run check
 ```
 
 ## Configuration
