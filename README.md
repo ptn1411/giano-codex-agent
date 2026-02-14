@@ -10,6 +10,7 @@ AI Coding Assistant for Giano Chat, powered by Claude API.
 - 📋 **Task System** - Define tasks in Markdown
 - 🔒 **Safety** - Command validation & approval flows
 - 📝 **Planning** - Multi-step task planning
+- 🛠️ **Tools** - See [Tool Catalog](TOOL_CATALOG.md) for full list.
 
 ## Quick Start
 
