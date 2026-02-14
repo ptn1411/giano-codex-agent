@@ -7,7 +7,7 @@ import { setupConfigHandler } from "./config.js";
 import { setupHelpHandler } from "./help.js";
 import { setupResetHandler } from "./reset.js";
 import { setupStatusHandler } from "./status.js";
-import { setupTasksHandler } from "./tasks.js";
+// import { setupTasksHandler } from "./tasks.js";
 
 export function setupHandlers(bot: Bot): void {
   // Core commands
@@ -17,7 +17,7 @@ export function setupHandlers(bot: Bot): void {
   setupHelpHandler(bot);
 
   // Task commands
-  setupTasksHandler(bot);
+  // setupTasksHandler(bot);
 
   // Admin commands
   setupConfigHandler(bot);
@@ -28,4 +28,4 @@ export { setupConfigHandler } from "./config.js";
 export { setupHelpHandler } from "./help.js";
 export { setupResetHandler } from "./reset.js";
 export { setupStatusHandler } from "./status.js";
-export { setupTasksHandler } from "./tasks.js";
+// export { setupTasksHandler } from "./tasks.js";

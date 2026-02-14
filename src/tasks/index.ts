@@ -11,6 +11,6 @@ export type {
   TaskTemplate,
 } from "./types.js";
 
-export { TaskExecutor, getTaskExecutor } from "./executor.js";
-export { TaskParser, getTaskParser } from "./parser.js";
-export { TaskReporter, getTaskReporter } from "./reporter.js";
+export { formatTaskForAgent } from "./executor.js";
+export { parseTask } from "./parser.js";
+// export { TaskReporter, getTaskReporter } from "./reporter.js"; // Commented out until verified

@@ -22,6 +22,9 @@ export interface AgentConfig {
   llmMaxTokens: number;
   llmTemperature: number;
 
+  // HTTP Tool
+  httpAllowlist: string[];
+
   // Agent
   defaultWorkspace: string;
   sandboxPolicy: SandboxPolicy;
@@ -87,6 +90,7 @@ export interface Thread {
   // State
   status: "idle" | "running" | "waiting_approval";
   currentTask?: string;
+  isCancelled?: boolean;
 }
 
 // ==========================================
@@ -113,7 +117,7 @@ export interface ToolParameter {
 
 export type ToolHandler = (
   args: Record<string, unknown>,
-  context: ToolContext,
+  context: ToolContext
 ) => Promise<ToolResult>;
 
 export interface ToolContext {
@@ -285,10 +289,19 @@ export interface ExecutionError {
 
 export type AgentEvent =
   | { type: "turn.started"; threadId: string }
-  | { type: "item.started"; item: { type: string; name?: string } }
-  | { type: "item.completed"; item: { type: string; result?: string } }
-  | { type: "text.delta"; delta: string }
-  | { type: "turn.completed"; result: AgentRunResult }
-  | { type: "error"; error: string };
+  | {
+      type: "item.started";
+      threadId: string;
+      item: { type: string; name?: string };
+    }
+  | {
+      type: "item.completed";
+      threadId: string;
+      item: { type: string; result?: string; name?: string };
+    }
+  | { type: "text.delta"; threadId: string; delta: string }
+  | { type: "turn.completed"; threadId: string; result: AgentRunResult }
+  | { type: "turn.cancelled"; threadId: string; reason?: string }
+  | { type: "error"; threadId?: string; error: string };
 
 export type EventHandler = (event: AgentEvent) => void | Promise<void>;

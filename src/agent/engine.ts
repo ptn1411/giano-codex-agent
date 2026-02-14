@@ -101,6 +101,13 @@ export class AgentEngine {
     const thread = await this.threads.getOrCreate(chatId, userId);
 
     await this.threads.updateStatus(thread.id, "running", task);
+
+    // Reset cancellation flag
+    if (thread.isCancelled) {
+      thread.isCancelled = false;
+      await this.threads.save(thread);
+    }
+
     await this.emit({ type: "turn.started", threadId: thread.id });
 
     try {
@@ -146,7 +153,7 @@ export class AgentEngine {
       const result = await this.reactLoop(thread);
 
       await this.threads.updateStatus(thread.id, "idle");
-      await this.emit({ type: "turn.completed", result });
+      await this.emit({ type: "turn.completed", threadId: thread.id, result });
 
       return result;
     } catch (error) {
@@ -155,6 +162,7 @@ export class AgentEngine {
 
       await this.emit({
         type: "error",
+        threadId: thread.id,
         error: error instanceof Error ? error.message : String(error),
       });
 
@@ -190,6 +198,23 @@ export class AgentEngine {
       // Get current messages
       const freshThread = await this.threads.get(thread.id);
       if (!freshThread) break;
+
+      // Check cancellation
+      if (freshThread.isCancelled) {
+        logInfo("Thread cancelled by user");
+        await this.emit({
+          type: "turn.cancelled",
+          threadId: thread.id,
+          reason: "User requested cancellation",
+        });
+        return {
+          success: false,
+          output: "Task was cancelled by user.",
+          toolCalls: allToolCalls,
+          tokensUsed: totalTokens,
+          modifiedFiles: [...new Set(modifiedFiles)],
+        };
+      }
 
       const messages = this.threads.getMessagesForLLM(freshThread);
 
@@ -236,7 +261,11 @@ export class AgentEngine {
       // Handle text content
       if (message.content) {
         lastOutput = message.content;
-        await this.emit({ type: "text.delta", delta: message.content });
+        await this.emit({
+          type: "text.delta",
+          threadId: thread.id,
+          delta: message.content,
+        });
 
         await this.threads.addMessage(thread.id, {
           role: "assistant",
@@ -360,6 +389,7 @@ export class AgentEngine {
     const promises = toolCalls.map(async (toolCall) => {
       await this.emit({
         type: "item.started",
+        threadId,
         item: { type: "tool", name: toolCall.function.name },
       });
 
@@ -376,8 +406,10 @@ export class AgentEngine {
 
       await this.emit({
         type: "item.completed",
+        threadId,
         item: {
           type: "tool",
+          name: toolCall.function.name,
           result: toolResult.success ? "success" : "error",
         },
       });

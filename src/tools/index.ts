@@ -8,6 +8,7 @@ import { writeFileDefinition, writeFileHandler } from "./file-write.js";
 import { gitEnhancedHandler, gitEnhancedTool } from "./git-enhanced.js";
 import { gitDefinition, gitHandler } from "./git.js";
 import { grepSearchDefinition, grepSearchHandler } from "./grep.js";
+import { httpRequestDefinition, httpRequestHandler } from "./http-request.js";
 import { listDirDefinition, listDirHandler } from "./list-dir.js";
 import { memoryAddDefinition, memoryAddHandler } from "./memory-add.js";
 import {
@@ -40,6 +41,9 @@ export function initializeTools(): ToolRegistry {
   registry.register(memorySearchDefinition, memorySearchHandler);
   registry.register(memoryAddDefinition, memoryAddHandler);
 
+  // Network
+  registry.register(httpRequestDefinition, httpRequestHandler);
+
   return registry;
 }
 
@@ -51,6 +55,7 @@ export { writeFileDefinition, writeFileHandler } from "./file-write.js";
 export { gitEnhancedHandler, gitEnhancedTool } from "./git-enhanced.js";
 export { gitDefinition, gitHandler } from "./git.js";
 export { grepSearchDefinition, grepSearchHandler } from "./grep.js";
+export { httpRequestDefinition, httpRequestHandler } from "./http-request.js";
 export { listDirDefinition, listDirHandler } from "./list-dir.js";
 export { ToolRegistry, getToolRegistry } from "./registry.js";
 

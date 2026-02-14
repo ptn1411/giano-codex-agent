@@ -180,6 +180,26 @@ export class ThreadManager {
     await this.save(thread);
   }
 
+  // Cancel thread
+  async cancel(threadId: string): Promise<boolean> {
+    const thread = await this.get(threadId);
+    if (!thread) return false;
+
+    thread.isCancelled = true;
+    thread.status = "idle"; // Force idle so it stops being considered "running" immediately for UI?
+    // Requirement said: "Thread status chuyển về idle và không kẹt running".
+    // If I set it here, the engine loop might overwrite it?
+    // Engine updates to "idle" at end of run.
+    // If I set it here, engine might overwrite it to "running" if it's mid-loop?
+    // Engine calls updateStatus(running) at start of loop? No, only at start of run.
+    // Engine loop does NOT call updateStatus(running).
+    // So setting it to idle here is safe and effectively "stops" it from UI perspective.
+    // The engine loop will see isCancelled and exit.
+
+    await this.save(thread);
+    return true;
+  }
+
   // Clear thread messages (reset)
   async reset(threadId: string): Promise<void> {
     const thread = await this.get(threadId);

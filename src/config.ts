@@ -21,6 +21,16 @@ const configSchema = z.object({
   llmModel: z.string().default("claude-opus-4-5-thinking"),
   llmMaxTokens: z.coerce.number().positive().default(8192),
   llmTemperature: z.coerce.number().min(0).max(2).default(0.7),
+  // HTTP Tool Configuration
+  httpAllowlist: z
+    .string()
+    .transform((s) =>
+      s
+        .split(",")
+        .map((d) => d.trim())
+        .filter(Boolean)
+    )
+    .default(""),
 
   // Agent
   defaultWorkspace: z.string().default("./workspace"),
@@ -65,6 +75,7 @@ function parseConfig(): AgentConfig {
     llmModel: process.env.LLM_MODEL,
     llmMaxTokens: process.env.LLM_MAX_TOKENS,
     llmTemperature: process.env.LLM_TEMPERATURE,
+    httpAllowlist: process.env.HTTP_ALLOWLIST,
     defaultWorkspace: process.env.DEFAULT_WORKSPACE,
     sandboxPolicy: process.env.SANDBOX_POLICY,
     approvalPolicy: process.env.APPROVAL_POLICY,
