@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "start": "bun src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target node",
+    "start": "node dist/index.js",
+    "build": "tsc",
     "build:darwin-arm64": "bun build ./src/index.ts --compile --target=bun-darwin-arm64 --outfile ./build/giano-agent-darwin-arm64",
     "build:darwin-x64": "bun build ./src/index.ts --compile --target=bun-darwin-x64 --outfile ./build/giano-agent-darwin-x64",
     "build:linux-arm64": "bun build ./src/index.ts --compile --target=bun-linux-arm64 --outfile ./build/giano-agent-linux-arm64",
@@ -17,8 +17,8 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write src/**/*.ts",
     "type-check": "tsc --noEmit",
-    "check": "bun run type-check && bun run lint && bun run build",
-    "ci": "bun run check"
+    "check": "npm run type-check && npm run lint && npm run build",
+    "ci": "npm run check"
   },
   "keywords": [
     "giano",
