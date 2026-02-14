@@ -26,7 +26,7 @@ export function setupAgentHandler(bot: Bot): void {
     logInfo(`Agent task from ${ctx.userId}: ${task}`);
 
     // Send processing message
-    const processingMsg = await ctx.reply("⏳ Processing your request...");
+    await ctx.reply("⏳ Processing your request...");
 
     try {
       const engine = getAgentEngine();

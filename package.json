@@ -16,7 +16,8 @@
     "build:all": "bun run build:windows-x64 && bun run build:darwin-arm64 && bun run build:darwin-x64 && bun run build:linux-x64",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write src/**/*.ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "check": "bun run type-check && bun run lint && bun run build"
   },
   "keywords": [
     "giano",
@@ -31,25 +32,26 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.72.1",
     "diff": "^7.0.0",
-    "dotenv": "^16.4.5",
-    "gianobot": "^1.0.0",
-    "glob": "^11.0.0",
+    "dotenv": "^16.6.1",
+    "gianobot": "^1.1.1",
+    "glob": "^11.1.0",
     "gray-matter": "^4.0.3",
-    "marked": "^15.0.0",
-    "openai": "^4.73.0",
-    "tiktoken": "^1.0.17",
-    "winston": "^3.17.0",
-    "zod": "^3.23.8"
+    "marked": "^15.0.12",
+    "openai": "^4.104.0",
+    "tiktoken": "^1.0.22",
+    "winston": "^3.19.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
     "@types/diff": "^6.0.0",
-    "typescript": "^5.7.2",
-    "tsx": "^4.19.2",
-    "eslint": "^9.17.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
-    "@typescript-eslint/parser": "^8.18.0",
-    "prettier": "^3.4.2"
+    "@types/node": "^22.19.11",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "5.7.2",
+    "typescript-eslint": "^8.55.0"
   },
   "engines": {
     "node": ">=20.0.0"

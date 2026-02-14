@@ -175,9 +175,12 @@ export class LLMClient {
         usage: {
           prompt_tokens: response.usage?.input_tokens || 0,
           completion_tokens: response.usage?.output_tokens || 0,
-          total_tokens:
-            (response.usage?.input_tokens || 0) +
-            (response.usage?.output_tokens || 0),
+          total_tokens: (() => {
+            const inputTokens = response.usage?.input_tokens || 0;
+            const outputTokens = response.usage?.output_tokens || 0;
+            const totalTokens = inputTokens + outputTokens;
+            return totalTokens;
+          })(),
         },
       };
     } catch (error) {
@@ -252,11 +255,7 @@ export type StreamEvent =
   | { type: "done"; content: string }
   | { type: "error"; error: string };
 
-interface PartialToolCall {
-  id: string;
-  name: string;
-  arguments: string;
-}
+// (removed unused PartialToolCall type)
 
 // Singleton instance
 let llmClient: LLMClient | null = null;

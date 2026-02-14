@@ -15,9 +15,9 @@ export function canExecuteCommands(policy: SandboxPolicy): boolean {
 
 // Blocked command patterns - NEVER allow these
 const BLOCKED_PATTERNS = [
-  /rm\s+(-rf?|--recursive)\s+[\/\\]/, // rm -rf /
+  /rm\s+(-rf?|--recursive)\s+[/\\]/, // rm -rf /
   /rm\s+(-rf?|--recursive)\s+~/, // rm -rf ~
-  /del\s+\/s\s+\/q\s+[A-Z]:\\/i, // Windows recursive delete
+  /del\s+\/s\s+\/q\s+[A-Z]:\\\\/i, // Windows recursive delete
   /format\s+[A-Z]:/i, // Windows format
   /mkfs/i, // Linux format
   /dd\s+if=.*of=\/dev/i, // dd to device

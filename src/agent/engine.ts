@@ -120,7 +120,7 @@ export class AgentEngine {
           toolNames: this.tools.getToolNames(),
           runtimeInfo: {
             agentId: "giano-codex-agent",
-            host: require("os").hostname?.() ?? "unknown",
+            host: (await import("node:os")).hostname?.() ?? "unknown",
             os: process.platform,
             arch: process.arch,
             model: config.llmModel,
@@ -174,7 +174,7 @@ export class AgentEngine {
     let consecutiveErrors = 0;
     const modifiedFiles: string[] = [];
     const allToolCalls: any[] = [];
-    let totalTokens = { input: 0, output: 0 };
+    const totalTokens = { input: 0, output: 0 };
     let lastOutput = "";
 
     while (iteration < MAX_ITERATIONS) {
