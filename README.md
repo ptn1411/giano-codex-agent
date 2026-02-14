@@ -78,6 +78,7 @@ src/
 ## Development Status
 
 See [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md) for progress.
+For future plans, see [BACKLOG.md](BACKLOG.md).
 
 ## License
 
