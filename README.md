@@ -58,8 +58,32 @@ In Giano chat:
 @agent add input validation to login endpoint
 @agent run tasks/fix-auth-bug.md
 @agent status
+@agent run tasks/fix-auth-bug.md
+@agent status
 @agent reset
 ```
+
+## IDE Integration (OpenClaw)
+
+This project includes integration scripts for OpenClaw.
+
+### Scripts
+
+- `scripts/openclaw.ps1`: Wrapper script to run OpenClaw CLI.
+  - Usage: `./scripts/openclaw.ps1 [check|fix|prompt] [message]`
+
+### VS Code Tasks
+
+Press `Ctrl+Shift+P` -> `Tasks: Run Task` -> `OpenClaw: ...`
+
+- `OpenClaw: Check`: Run system checks.
+- `OpenClaw: Fix Lint`: Auto-fix lint errors.
+- `OpenClaw: Custom Prompt`: Enter a custom instruction.
+
+### Keybindings (Optional)
+
+- `Ctrl+Alt+O`: Run Check
+- `Ctrl+Alt+L`: Run Fix Lint
 
 ## Project Structure
 
