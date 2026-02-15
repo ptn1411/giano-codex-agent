@@ -6,21 +6,26 @@ import { config } from "../config.js";
 import { logError, logger, logInfo } from "../utils/logger.js";
 import { setupHandlers } from "./handlers/index.js";
 import { errorMiddleware, loggingMiddleware } from "./middleware/index.js";
+import { CustomWebSocketManager } from "./ws-manager.js";
 
 let bot: Bot | null = null;
+let wsManager: CustomWebSocketManager | null = null;
 
 export function createBot(): Bot {
   if (bot) {
     return bot;
   }
 
+  // Disable internal retry by setting attempts to 0 or handling efficiently?
+  // gianobot still creates wsManager internally if we call start(), but we won't call start().
   bot = new Bot(config.botToken, {
     mode: "websocket",
     apiBaseUrl: config.gianoApiUrl,
     wsUrl: config.gianoWsUrl,
     logLevel: "info",
-    retryAttempts: 5,
-    retryDelay: 2000,
+    // These options are for the internal manager, which we are bypassing.
+    retryAttempts: 0,
+    retryDelay: 1000,
   });
 
   // Register middleware (order matters)
@@ -31,6 +36,8 @@ export function createBot(): Bot {
   setupHandlers(bot);
 
   // Event listeners
+  // Note: 'ready' is usually emitted by internal manager.
+  // Our custom manager will emit it manually on the bot instance.
   bot.on("ready", () => {
     logInfo("Bot connected and ready!");
     console.log("╔══════════════════════════════════════╗");
@@ -62,7 +69,14 @@ export async function startBot(): Promise<void> {
   const botInstance = createBot();
 
   try {
-    await botInstance.start();
+    // We do NOT call botInstance.start() to avoid using the flawed internal WS manager.
+    // Instead, we use our CustomWebSocketManager.
+    wsManager = new CustomWebSocketManager(
+      botInstance,
+      config.botToken,
+      config.gianoWsUrl
+    );
+    await wsManager.connect();
   } catch (error) {
     logError("Failed to start bot", error);
     throw error;
@@ -70,7 +84,13 @@ export async function startBot(): Promise<void> {
 }
 
 export async function stopBot(): Promise<void> {
+  if (wsManager) {
+    wsManager.stop();
+    wsManager = null;
+  }
   if (bot) {
+    // bot.stop() calls internal manager stop, but we didn't start it.
+    // It also emits 'stopped'.
     await bot.stop();
     bot = null;
   }
