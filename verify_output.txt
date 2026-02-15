@@ -1,0 +1,39 @@
+
+--- Testing Fail-Fast (Bad URL Syntax) ---
+11:36:13 AM [31merror[39m: TypeError: Invalid URL
+    at new URL (node:internal/url:827:25)
+    at CustomWebSocketManager.connect (C:\Users\NAM\Code\web\codex\giano-codex-agent\src\bot\ws-manager.ts:39:7)
+    at testFailFast (C:\Users\NAM\Code\web\codex\giano-codex-agent\src\verify_ws.ts:24:25)
+    at run (C:\Users\NAM\Code\web\codex\giano-codex-agent\src\verify_ws.ts:55:9)
+    at <anonymous> (C:\Users\NAM\Code\web\codex\giano-codex-agent\src\verify_ws.ts:59:1)
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Caught expected error: Invalid URL
+
+--- Testing Backoff (Connection Refused) ---
+11:36:13 AM [32minfo[39m: Connecting to Giano WebSocket...
+11:36:13 AM [31merror[39m: AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+11:36:13 AM [32minfo[39m: WebSocket closed.
+11:36:13 AM [32minfo[39m: Reconnecting in 1507ms...
+11:36:14 AM [32minfo[39m: Connecting to Giano WebSocket...
+11:36:14 AM [31merror[39m: AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+11:36:14 AM [32minfo[39m: WebSocket closed.
+11:36:14 AM [32minfo[39m: Reconnecting in 2672ms...
+11:36:17 AM [32minfo[39m: Connecting to Giano WebSocket...
+11:36:17 AM [31merror[39m: AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+11:36:17 AM [32minfo[39m: WebSocket closed.
+11:36:17 AM [32minfo[39m: Reconnecting in 4426ms...
+11:36:21 AM [32minfo[39m: Connecting to Giano WebSocket...
+11:36:21 AM [31merror[39m: AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+11:36:21 AM [32minfo[39m: WebSocket closed.
+11:36:21 AM [32minfo[39m: Reconnecting in 8739ms...
+11:36:23 AM [32minfo[39m: CustomWebSocketManager stopped.
