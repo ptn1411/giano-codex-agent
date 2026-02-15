@@ -2,6 +2,7 @@ import { Bot } from "gianobot";
 import Link from "ws";
 import { logDebug, logError, logInfo, logWarn } from "../utils/logger.js";
 
+// Custom WebSocket Manager with Backoff & Fail-Fast
 // We use 'any' to access private members of Bot that we need to interface with (updateRouter)
 
 export class CustomWebSocketManager {

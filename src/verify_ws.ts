@@ -37,23 +37,23 @@ async function testBackoff() {
   const closedUrl = "ws://localhost:9999";
   const manager = new CustomWebSocketManager(mockBot, "fake-token", closedUrl);
 
-  // Create a spy/mock on console.log/info to capture "Reconnecting in..." logs?
-  // Or just let it log to stdout and we capture it.
-
-  // We want to run it for a few seconds to see backoff increase
   try {
     manager.connect(); // Fire and forget, don't await because it retries
   } catch (e) {
     // Should not throw immediately
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await new Promise((resolve) => setTimeout(resolve, 8000)); // 8s wait to see 1s, 2s, 4s
   manager.stop();
 }
 
 async function run() {
   await testFailFast();
   await testBackoff();
+  process.exit(0); // Explicit exit to avoid hanging
 }
 
-run().catch(console.error);
+run().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
